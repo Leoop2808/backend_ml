@@ -6,6 +6,8 @@ from openai import OpenAI
 from pydantic import BaseModel
 import os
 
+load_dotenv()
+
 ruta_modelo_1 = Path(__file__).parent / 'ml_models' / 'modelo_hipertension_LOG.pkl'
 modelo_1 = joblib.load(ruta_modelo_1)
 ruta_modelo_2 = Path(__file__).parent / 'ml_models' / 'modelo_hipertension_RF.pkl'
@@ -18,9 +20,7 @@ class Response(BaseModel):
     prediccion: str
     respuesta: str
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def predecir_riesgo(datos) -> list[Response]:
     imc = datos.peso / (datos.estatura ** 2)
